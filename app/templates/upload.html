@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Ảnh và Phán Đoán</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center">Dự Đoán Bệnh Đục Thủy Tinh Thể</h1>
+
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="file" class="form-label">Chọn Ảnh</label>
+            <input type="file" class="form-control" id="file" name="file" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Tải Ảnh Lên</button>
+    </form>
+
+    {% if prediction %}
+    <div class="mt-4">
+        <h3>Kết Quả Phán Đoán:</h3>
+        <p><strong>Trạng thái bệnh: </strong>{{ prediction }}</p>
+        <img src="{{ url_for('static', filename='images' + filename) }}" alt="Uploaded Image" class="img-fluid">
+    </div>
+    {% endif %}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân tích đục thủy tinh thể</title>
+</head>
+<body>
+    <h1>Upload ảnh để phân tích đục thủy tinh thể</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="file">Chọn ảnh:</label>
+        <input type="file" id="file" name="file" accept="image/*" required>
+        <button type="submit">Upload và phân tích</button>
+    </form>
+    <br>
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();  // Ngừng form submit mặc định
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('file');
+            formData.append("file", fileInput.files[0]);
+
+            // Gửi yêu cầu POST tới Flask API
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hiển thị kết quả phân tích
+                if (data.status) {
+                    resultDiv.innerHTML = `<h3>Trạng thái bệnh: ${data.status}</h3>`;
+                } else {
+                    resultDiv.innerHTML = `<h3>Đã có lỗi: ${data.error}</h3>`;
+                }
+            })
+            .catch(error => {
+                resultDiv.innerHTML = `<h3>Đã xảy ra lỗi khi gửi yêu cầu: ${error}</h3>`;
+            });
+        });
+    </script>
+</body>
+</html>
